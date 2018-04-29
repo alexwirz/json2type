@@ -13,7 +13,7 @@ public class Playground {
 	public void createsEmptyClassForEmptyJsonObject() throws IOException {
 		final String json = "{}";
 		final String java =
-                JavaType.fromJson("foo.bar", "Test", json).get(0).toString();
+                JavaPackage.fromJson("foo.bar", "Test", json).get(0).toString();
 		final String expectedJava =
 				"package foo.bar;\n" +
                         "\n" +
@@ -31,7 +31,7 @@ public class Playground {
 	public void createsClassWithSingleIntForJsonObjectWithInt() throws IOException {
 		final String json = "{\"baz\" : 1}";
 		final String java =
-                JavaType.fromJson("foo.bar", "Test", json).get(0).toString();
+                JavaPackage.fromJson("foo.bar", "Test", json).get(0).toString();
 		final String expectedJava =
 				"package foo.bar;\n" +
                         "\n" +
@@ -57,7 +57,7 @@ public class Playground {
 	public void createsClassWithIntAndStringForJsonObjectWithIntAndString() throws IOException {
 		final String json = "{\"foo\" : 1, \"bar\" : \"baz\"}";
 		final String java =
-                JavaType.fromJson("foo.bar", "Test", json).get(0).toString();
+                JavaPackage.fromJson("foo.bar", "Test", json).get(0).toString();
 		final String expectedJava =
 				"package foo.bar;\n" +
                         "\n" +
@@ -89,13 +89,13 @@ public class Playground {
 
 	@Test
 	public void unboxesPrimitiveTypes() {
-        TypeName maybePrimitive = JavaType.getTypeNameForClass(Integer.class);
+        TypeName maybePrimitive = JavaPackage.getTypeNameForClass(Integer.class);
         assertThat(maybePrimitive).isEqualTo(TypeName.INT);
 	}
 
     @Test
     public void leavesComplexTypesUnboxed() {
-        TypeName maybePrimitive = JavaType.getTypeNameForClass(List.class);
+        TypeName maybePrimitive = JavaPackage.getTypeNameForClass(List.class);
         assertThat(maybePrimitive).isEqualTo(TypeName.get(List.class));
     }
 
@@ -103,7 +103,7 @@ public class Playground {
 	public void createsGeter() throws IOException {
 		final String json = "{\"baz\" : 1}";
 		final String java =
-				JavaType.fromJson("foo.bar", "Test", json).get(0).toString();
+				JavaPackage.fromJson("foo.bar", "Test", json).get(0).toString();
 		final String expectedJava =
 				"package foo.bar;\n" +
                         "\n" +
@@ -128,7 +128,7 @@ public class Playground {
 	@Test
 	public void createsSeparateClassesForNestedTypes() throws IOException {
 	    final String json = "{\"foo\" : {\"bar\" : 42}}";
-        final List<JavaFile> src = JavaType.fromJson("foo.bar", "Test", json);
+        final List<JavaFile> src = JavaPackage.fromJson("foo.bar", "Test", json);
         assertThat(src).hasSize(2);
         final String expectedTestClass =
                 "package foo.bar;\n" +
@@ -168,5 +168,12 @@ public class Playground {
                         "  }\n" +
                         "}";
         assertThat(src.get(0).toString()).isEqualToIgnoringWhitespace(expectedFooClass);
+    }
+
+	@Test
+	public void createsThreeSeparateClassesForThreeNestedTypes() throws IOException {
+        final String json = "{\"foo\" : {\"bar\" : {\"answer\" : 42}}}";
+        final List<JavaFile> src = JavaPackage.fromJson("foo.bar", "Test", json);
+        assertThat(src).hasSize(3);
     }
 }
