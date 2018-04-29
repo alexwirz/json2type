@@ -10,6 +10,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -45,7 +46,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>RELEASE</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -54,10 +55,5 @@
   		<version>3.9.0</version>
   		<scope>test</scope>
   	</dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>RELEASE</version>
-    </dependency>
   </dependencies>
 </project>

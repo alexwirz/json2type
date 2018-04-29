@@ -7,8 +7,9 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
-public class Playground {
+public class JavaPackageTest {
 	@Test
 	public void createsEmptyClassForEmptyJsonObject() throws IOException {
 		final String json = "{}";
