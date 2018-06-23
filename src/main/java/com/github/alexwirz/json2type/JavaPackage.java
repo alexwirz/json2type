@@ -8,6 +8,8 @@ import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,6 +27,10 @@ public class JavaPackage {
     public static List<JavaFile> fromJson(String packageName, String mainClassName, String json) throws IOException {
         JavaPackage javaPackage = new JavaPackage(packageName, mainClassName);
         return javaPackage.generateCodeFrom(json);
+    }
+
+    public static List<JavaFile> fromJsonFile(String packageName, String mainClassName, String jsonFileName) throws IOException {
+        return fromJson(packageName, mainClassName, new String(Files.readAllBytes(Paths.get(jsonFileName))));
     }
 
     private List<JavaFile> generateCodeFrom(String json) throws IOException {
