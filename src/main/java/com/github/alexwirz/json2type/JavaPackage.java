@@ -99,7 +99,7 @@ public class JavaPackage {
                 .build();
     }
 
-    private static String formatGeterName(String fieldName) {
+    public static String formatGeterName(String fieldName) {
         return "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
     }
 
@@ -118,7 +118,7 @@ public class JavaPackage {
                 .build();
     }
 
-    private static AnnotationSpec jsonPropertyAnnotation(String propertyName) {
+    public static AnnotationSpec jsonPropertyAnnotation(String propertyName) {
 	    return AnnotationSpec.builder(JsonProperty.class)
                 .addMember("value", "$S", propertyName)
                 .build();

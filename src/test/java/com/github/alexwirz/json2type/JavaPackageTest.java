@@ -176,4 +176,29 @@ public class JavaPackageTest {
         final List<JavaFile> src = JavaPackage.fromJson("foo.bar", "Test", json);
         assertThat(src).hasSize(3);
     }
+
+    @Test
+    public void createsGenericListsForArrays() throws IOException {
+		final String json = "{\"array\" : [1, 2]}";
+		final String expectedCode = "package foo;\n" +
+				"\n" +
+				"import com.fasterxml.jackson.annotation.JsonCreator;\n" +
+				"import com.fasterxml.jackson.annotation.JsonProperty;\n" +
+				"import java.util.List;\n" +
+				"\n" +
+				"public final class Test {\n" +
+				"  private final List<int> array;\n" +
+				"\n" +
+				"  @JsonCreator\n" +
+				"  public Test(@JsonProperty(\"array\") final List<int> array) {\n" +
+				"    this.array = array;\n" +
+				"  }\n" +
+				"\n" +
+				"  public List<int> getArray() {\n" +
+				"    return this.array;\n" +
+				"  }\n" +
+				"}\n";
+		final List<JavaFile> src = JavaPackage.fromJson("foo", "Test", json);
+		assertThat(src.get(0).toString()).isEqualToIgnoringWhitespace(expectedCode);
+	}
 }
