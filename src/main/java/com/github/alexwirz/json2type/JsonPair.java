@@ -3,26 +3,28 @@ package com.github.alexwirz.json2type;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
-import com.squareup.javapoet.TypeName;
 
 import javax.lang.model.element.Modifier;
+import java.util.LinkedHashMap;
 
 public class JsonPair<TValue extends Object> {
+    private final String packageName;
     private final String key;
     private final TValue value;
 
-    public JsonPair(final String key, final TValue value) {
+    public JsonPair(String packageName, final String key, final TValue value) {
+        this.packageName = packageName;
         this.key = key;
         this.value = value;
     }
 
 
     public boolean isComplex() {
-        return false;
+        return value instanceof LinkedHashMap;
     }
 
     public ParameterSpec generateCtorParameter() {
-        return ParameterSpec.builder(TypeName.get(value.getClass()), key)
+        return ParameterSpec.builder(JavaPackage.getTypeName(packageName, key, value), key)
                 .addModifiers(Modifier.FINAL)
                 .addAnnotation(JavaPackage.jsonPropertyAnnotation(key))
                 .build();
@@ -30,7 +32,7 @@ public class JsonPair<TValue extends Object> {
 
     public FieldSpec generateField() {
         return FieldSpec
-                .builder(TypeName.get(value.getClass()), key)
+                .builder(JavaPackage.getTypeName(packageName, key, value), key)
                 .addModifiers(Modifier.FINAL)
                 .addModifiers(Modifier.PRIVATE)
                 .build();
@@ -38,7 +40,7 @@ public class JsonPair<TValue extends Object> {
 
     public MethodSpec generateGetter() {
         return MethodSpec.methodBuilder(JavaPackage.formatGeterName(key))
-                .returns(TypeName.get(value.getClass()))
+                .returns(JavaPackage.getTypeName(packageName, key, value))
                 .addModifiers(Modifier.PUBLIC)
                 .addStatement("return this.$N", key)
                 .build();

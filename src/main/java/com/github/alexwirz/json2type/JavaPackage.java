@@ -44,7 +44,7 @@ public class JavaPackage {
         return objectMapper.readValue(json, mapTypeReference);
     }
 
-    private static String typeName(String fieldName) {
+    public static String typeName(String fieldName) {
         return fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
     }
 
@@ -137,12 +137,16 @@ public class JavaPackage {
                 .build();
     }
 
-    private TypeName getTypeName(Map.Entry<String, Object> entry) {
-        if(isComplex(entry.getValue())) {
-            return ClassName.get(packageName, typeName(entry.getKey()));
+    public TypeName getTypeName(Map.Entry<String, Object> entry) {
+        return getTypeName(packageName, entry.getKey(), entry.getValue());
+    }
+
+    public static TypeName getTypeName(String packageName, String key, Object value) {
+        if(isComplex(value)) {
+            return ClassName.get(packageName, typeName(key));
         }
 
-        return getTypeNameForClass(entry.getValue().getClass());
+        return getTypeNameForClass(value.getClass());
     }
 
     public static TypeName getTypeNameForClass(Class clazz) {

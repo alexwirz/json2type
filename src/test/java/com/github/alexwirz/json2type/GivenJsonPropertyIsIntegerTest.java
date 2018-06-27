@@ -11,7 +11,7 @@ public class GivenJsonPropertyIsIntegerTest {
     private final JsonPair<Integer> jsonPair;
 
     public GivenJsonPropertyIsIntegerTest() {
-        this.jsonPair = new JsonPair<>("answer", 42);
+        this.jsonPair = new JsonPair<>("test", "answer", 42);
     }
 
     @Test
@@ -23,7 +23,7 @@ public class GivenJsonPropertyIsIntegerTest {
     public void thenCtorParameterIsInteger() {
         ParameterSpec ctorParmeter = jsonPair.generateCtorParameter();
         assertThat(ctorParmeter).isNotNull();
-        assertThat(ctorParmeter.type.toString()).isEqualToIgnoringCase("java.lang.Integer");
+        assertThat(ctorParmeter.type.toString()).isEqualToIgnoringCase("int");
     }
 
     @Test

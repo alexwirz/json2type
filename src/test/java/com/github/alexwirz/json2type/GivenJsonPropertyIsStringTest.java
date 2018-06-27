@@ -13,7 +13,7 @@ public class GivenJsonPropertyIsStringTest {
     private final JsonPair<String> jsonPair;
 
     public GivenJsonPropertyIsStringTest() {
-        this.jsonPair = new JsonPair<>("foo", "bar");
+        this.jsonPair = new JsonPair<>("test", "foo", "bar");
     }
 
     @Test
