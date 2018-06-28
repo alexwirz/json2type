@@ -88,18 +88,6 @@ public class JavaPackageTest {
 	}
 
 	@Test
-	public void unboxesPrimitiveTypes() {
-        TypeName maybePrimitive = JavaPackage.getTypeNameForClass(Integer.class);
-        assertThat(maybePrimitive).isEqualTo(TypeName.INT);
-	}
-
-    @Test
-    public void leavesComplexTypesUnboxed() {
-        TypeName maybePrimitive = JavaPackage.getTypeNameForClass(List.class);
-        assertThat(maybePrimitive).isEqualTo(TypeName.get(List.class));
-    }
-
-	@Test
 	public void createsGeter() throws IOException {
 		final String json = "{\"baz\" : 1}";
 		final String java =

@@ -8,23 +8,24 @@ import java.util.LinkedHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GivenJsonPairIsComplex {
-    private final JsonPair<LinkedHashMap> jsonPair;
+public class GivenJavaPropertyIsComplex {
+    private final JavaProperty<LinkedHashMap> javaProperty;
 
-    public GivenJsonPairIsComplex() {
+    public GivenJavaPropertyIsComplex() {
         ImmutableMap<String, Object> map = ImmutableMap.<String, Object>builder().put("foo", "bar").put("answer", 42).build();
-        this.jsonPair = new JsonPair<>("test", "inner", new LinkedHashMap(map));
+        this.javaProperty = new JavaProperty<>("test", "inner", new LinkedHashMap(map));
     }
 
     @Test
     public void thenIsComplexIsTrue() {
-        assertThat(jsonPair.isComplex()).isTrue();
+        assertThat(javaProperty.isComplex()).isTrue();
     }
 
     @Test
     public void thenCtorParameterIsInner() {
-        ParameterSpec ctorParmeter = jsonPair.generateCtorParameter();
+        ParameterSpec ctorParmeter = javaProperty.generateCtorParameter();
         assertThat(ctorParmeter).isNotNull();
         assertThat(ctorParmeter.type.toString()).isEqualToIgnoringCase("test.Inner");
     }
+
 }
