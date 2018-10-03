@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 
 public class JavaProperty<TValue extends Object> {
     private final String packageName;
-    private final String key;
+    private final String name;
     private final TValue value;
 
     public JavaProperty(String packageName, final String key, final TValue value) {
         this.packageName = packageName;
-        this.key = key;
+        this.name = new JavaIdentifierName(key).toString();
         this.value = value;
     }
 
@@ -24,17 +24,17 @@ public class JavaProperty<TValue extends Object> {
     }
 
     public ParameterSpec generateCtorParameter() {
-        return ParameterSpec.builder(fullyQualifiedTypeName(), key)
+        return ParameterSpec.builder(fullyQualifiedTypeName(), name)
                 .addModifiers(Modifier.FINAL)
                 .addAnnotation(AnnotationSpec.builder(JsonProperty.class)
-                        .addMember("value", "$S", key)
+                        .addMember("value", "$S", name)
                         .build())
                 .build();
     }
 
     public FieldSpec generateField() {
         return FieldSpec
-                .builder(fullyQualifiedTypeName(), key)
+                .builder(fullyQualifiedTypeName(), name)
                 .addModifiers(Modifier.FINAL)
                 .addModifiers(Modifier.PRIVATE)
                 .build();
@@ -44,16 +44,16 @@ public class JavaProperty<TValue extends Object> {
         return MethodSpec.methodBuilder(formatGeterName())
                 .returns(fullyQualifiedTypeName())
                 .addModifiers(Modifier.PUBLIC)
-                .addStatement("return this.$N", key)
+                .addStatement("return this.$N", name)
                 .build();
     }
 
     private String formatGeterName() {
-        return "get" + key.substring(0, 1).toUpperCase() + key.substring(1);
+        return "get" + name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
     public CodeBlock generateAssignment() {
-        return CodeBlock.of("this.$N = $N", key, key);
+        return CodeBlock.of("this.$N = $N", name, name);
     }
 
     public List<JavaProperty<?>> fields() {
@@ -94,6 +94,6 @@ public class JavaProperty<TValue extends Object> {
     }
 
     public String shortTypeName() {
-        return key.substring(0, 1).toUpperCase() + key.substring(1);
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 }
