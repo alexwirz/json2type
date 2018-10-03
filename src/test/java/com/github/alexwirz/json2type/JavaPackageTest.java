@@ -166,23 +166,47 @@ public class JavaPackageTest {
     }
 
     @Test
-    public void createsGenericListsForArrays() throws IOException {
+    public void createsIntArrayForIntArrays() throws IOException {
 		final String json = "{\"array\" : [1, 2]}";
 		final String expectedCode = "package foo;\n" +
 				"\n" +
 				"import com.fasterxml.jackson.annotation.JsonCreator;\n" +
 				"import com.fasterxml.jackson.annotation.JsonProperty;\n" +
-				"import java.util.List;\n" +
 				"\n" +
 				"public final class Test {\n" +
-				"  private final List<int> array;\n" +
+				"  private final int[] array;\n" +
 				"\n" +
 				"  @JsonCreator\n" +
-				"  public Test(@JsonProperty(\"array\") final List<int> array) {\n" +
+				"  public Test(@JsonProperty(\"array\") final int[] array) {\n" +
 				"    this.array = array;\n" +
 				"  }\n" +
 				"\n" +
-				"  public List<int> getArray() {\n" +
+				"  public int[] getArray() {\n" +
+				"    return this.array;\n" +
+				"  }\n" +
+				"}\n";
+		final List<JavaFile> src = JavaPackage.fromJson("foo", "Test", json);
+		assertThat(src.get(0).toString()).isEqualToIgnoringWhitespace(expectedCode);
+	}
+
+	@Test
+	public void createsStringArrayForStringArrays() throws IOException {
+		final String json = "{\"array\" : [\"a\", \"b\"]}";
+		final String expectedCode = "package foo;\n" +
+				"\n" +
+				"import com.fasterxml.jackson.annotation.JsonCreator;\n" +
+				"import com.fasterxml.jackson.annotation.JsonProperty;\n" +
+				"import java.lang.String;\n" +
+				"\n" +
+				"public final class Test {\n" +
+				"  private final String[] array;\n" +
+				"\n" +
+				"  @JsonCreator\n" +
+				"  public Test(@JsonProperty(\"array\") final String[] array) {\n" +
+				"    this.array = array;\n" +
+				"  }\n" +
+				"\n" +
+				"  public String[] getArray() {\n" +
 				"    return this.array;\n" +
 				"  }\n" +
 				"}\n";

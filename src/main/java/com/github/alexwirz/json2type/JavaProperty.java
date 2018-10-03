@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class JavaProperty<TValue extends Object> {
@@ -75,6 +72,24 @@ public class JavaProperty<TValue extends Object> {
 
     private TypeName getTypeNameForClass() {
         TypeName typeName = TypeName.get(value.getClass());
+        return maybeArrayTypeName(typeName).orElseGet(() -> maybeUnbox(typeName));
+    }
+
+    private Optional<TypeName> maybeArrayTypeName(TypeName typeName) {
+        TypeName listTypeName = TypeName.get(ArrayList.class);
+        if(typeName.equals(listTypeName)) {
+            return Optional.of(arrayTypeName());
+        }
+
+        return Optional.empty();
+    }
+
+    private TypeName arrayTypeName() {
+        ArrayList arrayList = (ArrayList) this.value;
+        return ArrayTypeName.of(maybeUnbox(TypeName.get(arrayList.get(0).getClass())));
+    }
+
+    private TypeName maybeUnbox(TypeName typeName) {
         return typeName.isBoxedPrimitive() ? typeName.unbox() : typeName;
     }
 
