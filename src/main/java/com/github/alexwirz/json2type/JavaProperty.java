@@ -71,6 +71,10 @@ public class JavaProperty<TValue extends Object> {
     }
 
     private TypeName getTypeNameForClass() {
+        if(value == null) {
+            return TypeName.OBJECT;
+        }
+
         TypeName typeName = TypeName.get(value.getClass());
         return maybeArrayTypeName(typeName).orElseGet(() -> maybeUnbox(typeName));
     }
