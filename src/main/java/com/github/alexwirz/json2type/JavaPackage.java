@@ -18,7 +18,7 @@ public class JavaPackage {
     }
 
     public static List<JavaFile> fromJsonFile(String packageName, String mainClassName, String jsonFileName) throws IOException {
-        return fromJson(packageName, mainClassName, new String(Files.readAllBytes(Paths.get(jsonFileName))));
+        return fromJson(packageName, mainClassName, new String(Files.readAllBytes(Paths.get(jsonFileName)), "UTF-8"));
     }
 
     public static List<JavaFile> fromJson(String packageName, String mainClassName, String json) throws IOException {
