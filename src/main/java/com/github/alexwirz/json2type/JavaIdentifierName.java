@@ -18,8 +18,8 @@ public class JavaIdentifierName {
 
     private String replaceNonJavaIdentifierPartsWithUnderscore(String name) {
         char[] chars = name.toCharArray();
-        for(int i = 1; i < chars.length; ++i) {
-            if(!Character.isJavaIdentifierStart(chars[i])) {
+        for(int i = 0; i < chars.length; i++) {
+            if(!Character.isJavaIdentifierPart(chars[i])) {
                 chars[i] = '_';
             }
         }

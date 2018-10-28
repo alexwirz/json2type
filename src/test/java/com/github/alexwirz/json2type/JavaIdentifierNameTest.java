@@ -30,4 +30,9 @@ public class JavaIdentifierNameTest {
     public void nonAlphaNumberReplacedWithUnderscore() {
         assertThat(new JavaIdentifierName("a!%&*#?").toString(), is("a______"));
     }
+
+    @Test
+    public void givenNameStartsWithANumber_thenUnderscorePrepended() {
+        assertThat(new JavaIdentifierName("64x64").toString(), is("_64x64"));
+    }
 }
